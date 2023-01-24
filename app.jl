@@ -1,6 +1,4 @@
 using JSServe
-
-using JSServe
 import JSServe.TailwindDashboard as D
 
 function range_slider(orientation)
@@ -68,5 +66,11 @@ end
 
 server = JSServe.Server(my_app, "0.0.0.0", parse(Int, ENV["PORT"]); proxy_url="https://jsserve-yay.herokuapp.com")
 route!(server, "/hello-world" => App(DOM.div("hello world")))
+
+app_404 = App() do session, request
+    DOM.div("We don't have anything setup for $(request.target)")
+end
+
+route!(server, ".*" => app_404)
 
 wait(server)
