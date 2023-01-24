@@ -66,7 +66,7 @@ my_app = App() do
     )
 end
 
-server = JSServe.Server(my_app, "0.0.0.0", parse(Int, ENV["PORT"]))
+server = JSServe.Server(my_app, "0.0.0.0", parse(Int, ENV["PORT"]); proxy_url="https://jsserve-yay.herokuapp.com")
 route!(server, "/hello-world" => App(DOM.div("hello world")))
 
 wait(server)
