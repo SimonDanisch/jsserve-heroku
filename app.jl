@@ -64,7 +64,10 @@ my_app = App() do
     )
 end
 
-server = JSServe.Server(my_app, "0.0.0.0", parse(Int, ENV["PORT"]); proxy_url="https://jsserve-yay.herokuapp.com")
+app_name = ENV["HEROKU_APP_NAME"]
+url = "https://$(app_name).herokuapp.com"
+server = JSServe.Server(my_app, "0.0.0.0", parse(Int, ENV["PORT"]); proxy_url=url)
+
 route!(server, "/hello-world" => App(DOM.div("hello world")))
 
 app_404 = App() do session, request
