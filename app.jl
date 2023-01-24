@@ -64,10 +64,13 @@ my_app = App() do
     )
 end
 
-app_name = ENV["HEROKU_APP_NAME"]
+# needs to match `heroku create - a example-app`,
+# which we can ensure by using the env variable
+# which is only available in review app, so one needs to fill this in manually for now
+# https://devcenter.heroku.com/articles/github-integration-review-apps#injected-environment-variables
+app_name = get(ENV, "HEROKU_APP_NAME", "jsserve-yay")
 url = "https://$(app_name).herokuapp.com"
 server = JSServe.Server(my_app, "0.0.0.0", parse(Int, ENV["PORT"]); proxy_url=url)
-
 route!(server, "/hello-world" => App(DOM.div("hello world")))
 
 app_404 = App() do session, request
